@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Version>3.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Rxweb.Core.Annotations\RxWeb.Core.Annotations.csproj" />
+    <ProjectReference Include="..\..\Common\RxWeb.Core.Repository\RxWeb.Core.Data.csproj" />
+    <ProjectReference Include="..\..\Common\Rxweb.Core.Sanitizers\RxWeb.Core.Sanitizers.csproj" />
+    <ProjectReference Include="..\..\Common\RxWeb.Core.Security\RxWeb.Core.Security.csproj" />
+    <ProjectReference Include="..\..\Common\RxWeb.Core\RxWeb.Core.csproj" />
+  </ItemGroup>
+
+</Project>
