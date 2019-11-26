@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("RolePermissions",Schema="core")]
+    [Table("RolePermissions",Schema="dbo")]
     public partial class RolePermission
     {
 		#region RolePermissionId Annotations
@@ -21,7 +23,7 @@ namespace NewProjectSolution.Models.Main
 
         [Range(1,int.MaxValue)]
         [Required]
-        [RelationshipTableAttribue("Roles","core","","RoleId")]
+        [RelationshipTableAttribue("Roles","dbo","","RoleId")]
 		#endregion RoleId Annotations
 
         public int RoleId { get; set; }
@@ -30,7 +32,7 @@ namespace NewProjectSolution.Models.Main
 
         [Range(1,int.MaxValue)]
         [Required]
-        [RelationshipTableAttribue("ApplicationModules","core","","ApplicationModuleId")]
+        [RelationshipTableAttribue("ApplicationModules","dbo","","ApplicationModuleId")]
 		#endregion ApplicationModuleId Annotations
 
         public int ApplicationModuleId { get; set; }

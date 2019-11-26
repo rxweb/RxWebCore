@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("ApplicationLocales",Schema="core")]
+    [Table("ApplicationLocales",Schema="dbo")]
     public partial class ApplicationLocale
     {
 		#region ApplicationLocaleId Annotations

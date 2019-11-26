@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("LanguageContents",Schema="core")]
+    [Table("LanguageContents",Schema="dbo")]
     public partial class LanguageContent
     {
 		#region LanguageContentId Annotations
@@ -21,7 +23,7 @@ namespace NewProjectSolution.Models.Main
 
         [Range(1,int.MaxValue)]
         [Required]
-        [RelationshipTableAttribue("LanguageContentKeys","core","","LanguageContentKeyId")]
+        [RelationshipTableAttribue("LanguageContentKeys","dbo","","LanguageContentKeyId")]
 		#endregion LanguageContentKeyId Annotations
 
         public int LanguageContentKeyId { get; set; }

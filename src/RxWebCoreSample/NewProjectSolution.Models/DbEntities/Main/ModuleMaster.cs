@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("ModuleMasters",Schema="core")]
+    [Table("ModuleMasters",Schema="dbo")]
     public partial class ModuleMaster
     {
 		#region ModuleMasterId Annotations

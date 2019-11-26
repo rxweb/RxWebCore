@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RxWeb.Core.Annotations.Extensions;
 using RxWeb.Core.Annotations.Models;
+using RxWeb.Core.Sanitizers.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,7 @@ namespace RxWeb.Core.Annotations
             var errors = new Dictionary<string, string>();
             if (value != null)
             {
+                value.Sanitize(httpContext);
                 var entityType = value.GetType();
                 var properties = entityType.GetProperties();
                 foreach (var property in properties)

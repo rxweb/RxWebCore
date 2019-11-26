@@ -18,7 +18,7 @@ namespace RxWeb.Core.Annotations.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var modelValidation = (IModelValidation)context.HttpContext.RequestServices.GetService(typeof(IModelValidation));
-            var argument = context.ActionArguments.FirstOrDefault().Value;
+            var argument = context.ActionArguments.LastOrDefault().Value;
             if (argument != null && modelValidation != null) {
                 var result = modelValidation.Validate(argument, context.HttpContext);
                 if (result != null) {

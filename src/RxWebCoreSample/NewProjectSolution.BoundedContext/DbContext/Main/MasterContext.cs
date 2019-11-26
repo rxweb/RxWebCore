@@ -17,7 +17,9 @@ namespace NewProjectSolution.BoundedContext.Main
             		public DbSet<vUser> vUsers { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<UserRole> UserRoles { get; set; }
+            		public DbSet<Person> Persons { get; set; }
             #endregion DbSets
+
 
 
     }

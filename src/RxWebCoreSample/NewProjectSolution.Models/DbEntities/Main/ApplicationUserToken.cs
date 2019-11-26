@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("ApplicationUserTokens",Schema="core")]
+    [Table("ApplicationUserTokens",Schema="dbo")]
     [RecordLog]
     public partial class ApplicationUserToken
     {
@@ -22,7 +24,7 @@ namespace NewProjectSolution.Models.Main
 
         [Range(1,int.MaxValue)]
         [Required]
-        [RelationshipTableAttribue("Users","core","UserName","UserId")]
+        [RelationshipTableAttribue("Users","dbo","UserName","UserId")]
 		#endregion UserId Annotations
 
         public int UserId { get; set; }

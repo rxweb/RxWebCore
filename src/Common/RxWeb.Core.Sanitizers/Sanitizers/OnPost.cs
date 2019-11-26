@@ -27,10 +27,13 @@ namespace RxWeb.Core.Sanitizers
                     case ActionValueType.DateTimeUtc:
                         value = DateTime.UtcNow;
                         break;
+                    case ActionValueType.DateTimeOffsetUtc:
+                        value = DateTimeOffset.UtcNow;
+                        break;
                     case ActionValueType.NameClaimIdentifier:
                         var userClaim = context.User.Claims.FirstOrDefault(t => t.Type == ClaimTypes.NameIdentifier);
                         if (userClaim != null)
-                            value = userClaim.Value;
+                            value = Convert.ToInt32(userClaim.Value);
                         break;
                 }
             }

@@ -4,6 +4,7 @@
     {
         DateTime =  1,
         DateTimeUtc = 2,
-        NameClaimIdentifier = 3
+        DateTimeOffsetUtc = 3,
+        NameClaimIdentifier = 4
     }
 }

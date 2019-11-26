@@ -3,115 +3,104 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
 using NewProjectSolution.BoundedContext.SqlContext;
-using RxWeb.Core.Annotations.Models;
-
 namespace NewProjectSolution.Models.Main
 {
-    [Table("Users", Schema = "core")]
+    [Table("Users",Schema="dbo")]
     public partial class User
     {
-        #region UserId Annotations
+		#region UserId Annotations
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [System.ComponentModel.DataAnnotations.Key]
-        #endregion UserId Annotations
+		#endregion UserId Annotations
 
         public int UserId { get; set; }
 
-        #region ApplicationLocaleId Annotations
+		#region ApplicationLocaleId Annotations
 
         [Range(1, int.MaxValue)]
         [Required]
-        #endregion ApplicationLocaleId Annotations
+		#endregion ApplicationLocaleId Annotations
 
         public int ApplicationLocaleId { get; set; }
 
-        #region ApplicationTimeZoneId Annotations
+		#region ApplicationTimeZoneId Annotations
 
         [Range(1, int.MaxValue)]
         [Required]
-        #endregion ApplicationTimeZoneId Annotations
+		#endregion ApplicationTimeZoneId Annotations
 
         public int ApplicationTimeZoneId { get; set; }
 
-        #region LanguageCode Annotations
+		#region LanguageCode Annotations
 
         [Required]
         [MaxLength(3)]
-        #endregion LanguageCode Annotations
+		#endregion LanguageCode Annotations
 
         public string LanguageCode { get; set; }
 
-        #region UserName Annotations
-        private List<UniqueQuery> UniqueUserName()
-        {
-            return new List<UniqueQuery>() {
-                new UniqueQuery{
-                ColumnName="StatusId",
-                QueryOperator=RxWeb.Core.Annotations.Enums.SqlQueryOperator.Equal,
-                Value=Status.Active
-                }
-            };
-        }
+		#region UserName Annotations
+
         [Required]
         [MaxLength(50)]
-        [Unique(typeof(IMainDatabaseFacade),nameof(User.UniqueUserName))]
-        #endregion UserName Annotations
+		#endregion UserName Annotations
 
         public string UserName { get; set; }
 
-        #region Password Annotations
+		#region Password Annotations
 
-        //[Required]
+        [Required]
         [MaxLength(132)]
-        #endregion Password Annotations
+		#endregion Password Annotations
 
         public byte[] Password { get; set; }
 
-        #region Salt Annotations
+		#region Salt Annotations
 
-        //  [Required]
+        [Required]
         [MaxLength(140)]
-        #endregion Salt Annotations
+		#endregion Salt Annotations
 
         public byte[] Salt { get; set; }
 
-        #region LoginBlocked Annotations
+		#region LoginBlocked Annotations
 
         [Required]
-        #endregion LoginBlocked Annotations
+		#endregion LoginBlocked Annotations
 
         public bool LoginBlocked { get; set; }
 
-        #region StatusId Annotations
+		#region StatusId Annotations
 
         [Range(1, int.MaxValue)]
         [Required]
-        #endregion StatusId Annotations
+		#endregion StatusId Annotations
 
         public Status StatusId { get; set; }
 
-        #region ApplicationUserTokens Annotations
+		#region ApplicationUserTokens Annotations
 
         [InverseProperty("User")]
-        #endregion ApplicationUserTokens Annotations
+		#endregion ApplicationUserTokens Annotations
 
         public virtual ICollection<ApplicationUserToken> ApplicationUserTokens { get; set; }
 
-        #region UserRoles Annotations
+		#region UserRoles Annotations
 
         [InverseProperty("User")]
-        #endregion UserRoles Annotations
+		#endregion UserRoles Annotations
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
 
         public User()
         {
-            ApplicationUserTokens = new HashSet<ApplicationUserToken>();
-            UserRoles = new HashSet<UserRole>();
+			ApplicationUserTokens = new HashSet<ApplicationUserToken>();
+			UserRoles = new HashSet<UserRole>();
         }
-    }
+	}
 }

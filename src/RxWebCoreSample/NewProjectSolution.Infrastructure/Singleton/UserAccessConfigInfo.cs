@@ -13,16 +13,16 @@ namespace NewProjectSolution.Infrastructure.Singleton
     {
         public UserAccessConfigInfo()
         {
-            this.AccessInfo = new ConcurrentDictionary<int, Dictionary<int, Dictionary<string, bool>>>();
+            this.AccessInfo = new ConcurrentDictionary<int, Dictionary<int, Dictionary<string, object>>>();
             this.Tokens = new ConcurrentDictionary<string, string>();
         }
-        private ConcurrentDictionary<int, Dictionary<int, Dictionary<string, bool>>> AccessInfo { get; set; }
+        private ConcurrentDictionary<int, Dictionary<int, Dictionary<string, object>>> AccessInfo { get; set; }
 
         public ConcurrentDictionary<string, string> Tokens { get; set; }
 
-        public async Task<Dictionary<int, Dictionary<string, bool>>> GetFullInfoAsync(int userId, ILoginUow loginUow)
+        public async Task<Dictionary<int, Dictionary<string, object>>> GetFullInfoAsync(int userId, ILoginUow loginUow)
         {
-            Dictionary<int, Dictionary<string, bool>> modules = null;
+            Dictionary<int, Dictionary<string, object>> modules = null;
             if (!this.AccessInfo.TryGetValue(userId, out modules))
             {
                 await this.CacheAccessInfoAsync(loginUow, userId);
@@ -33,15 +33,15 @@ namespace NewProjectSolution.Infrastructure.Singleton
 
         public async Task<bool> GetAccessInfoAsync(int userId, int applicationModuleId, string action, ILoginUow loginUow, bool cachedCall = false)
         {
-            Dictionary<int, Dictionary<string, bool>> moduleIds;
+            Dictionary<int, Dictionary<string, object>> moduleIds;
             if (this.AccessInfo.TryGetValue(userId, out moduleIds))
             {
-                Dictionary<string, bool> actionAccess;
+                Dictionary<string, object> actionAccess;
                 if (moduleIds.TryGetValue(applicationModuleId, out actionAccess))
                 {
-                    bool value;
+                    object value;
                     if (actionAccess.TryGetValue(action, out value))
-                        return value;
+                        return Convert.ToBoolean(value) ;
                 }
             }
             else
@@ -55,7 +55,7 @@ namespace NewProjectSolution.Infrastructure.Singleton
             return false;
         }
 
-        public void SaveAccessInfo(int userId, Dictionary<int, Dictionary<string, bool>> value)
+        public void SaveAccessInfo(int userId, Dictionary<int, Dictionary<string, object>> value)
         {
             this.AccessInfo.AddOrUpdate(userId, value, (x, y) => value);
         }
@@ -70,10 +70,13 @@ namespace NewProjectSolution.Infrastructure.Singleton
                 rolePermissions.AddRange(permissions);
             }
             var userAccess = rolePermissions.OrderBy(t => t.PermissionPriority);
-            var moduleAccess = new Dictionary<int, Dictionary<string, bool>>();
+            var moduleAccess = new Dictionary<int, Dictionary<string, object>>();
             foreach (var access in userAccess)
             {
-                var actionAccess = new Dictionary<string, bool>();
+                var haveParentModule = await loginUow.Repository<ApplicationModule>().SingleOrDefaultAsync(t => t.ApplicationModuleId == access.ApplicationModuleId && t.ParentApplicationModuleId != null);
+                var actionAccess = new Dictionary<string, object>();
+                if (haveParentModule != null)
+                    actionAccess.Add(PARENT, haveParentModule.ParentApplicationModuleId);
                 actionAccess.Add(GET, access.CanView == true);
                 actionAccess.Add(POST, access.CanAdd == true);
                 actionAccess.Add(PUT, access.CanEdit == true);
@@ -115,14 +118,14 @@ namespace NewProjectSolution.Infrastructure.Singleton
         public async Task RemoveTokenAsync(int userId, string audience, ILoginUow loginUow)
         {
             var applicationUserTokens = await loginUow.Repository<ApplicationUserToken>().FindByAsync(t => t.UserId == userId && t.AudienceType == audience);
-            foreach(var applicationUserToken in applicationUserTokens)
+            foreach (var applicationUserToken in applicationUserTokens)
             {
                 await loginUow.RegisterDeletedAsync<ApplicationUserToken>(applicationUserToken);
                 string token;
                 this.Tokens.TryRemove(applicationUserToken.SecurityKey, out token);
             }
             await loginUow.CommitAsync();
-            
+
         }
 
         const string GET = "get";
@@ -134,6 +137,7 @@ namespace NewProjectSolution.Infrastructure.Singleton
         const string PATCH = "patch";
 
         const string DELETE = "delete";
+        const string PARENT = "parent";
     }
 }
 

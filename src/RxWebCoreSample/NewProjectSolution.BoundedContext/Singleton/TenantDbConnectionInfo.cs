@@ -44,7 +44,7 @@ namespace NewProjectSolution.BoundedContext.Singleton
             try
             {
                 sqlConnection.Open();
-                var sqlCommand = new SqlCommand("select ##0##, ##1##,##2## from ##3##", sqlConnection);
+                var sqlCommand = new SqlCommand("select ##0##, ##1##,##2##, ##3## from ##4##", sqlConnection);
                 var dataReader = sqlCommand.ExecuteReader();
                 var hostUri = string.Empty;
                 var connectionInfo = new Dictionary<string, string>();

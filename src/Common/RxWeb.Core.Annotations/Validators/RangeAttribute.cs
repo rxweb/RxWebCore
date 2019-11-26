@@ -22,7 +22,7 @@ namespace RxWeb.Core.Annotations
                 if (this.HaveValue(propertyValue)) {
                     if(property.PropertyType == typeof(int))
                     {
-                        var allowMinimum = (int)this.Config[ApplicationConstants.AllowMaximum];
+                        var allowMinimum = (int)this.Config[ApplicationConstants.AllowMinimum];
                         var allowMaximum = (int)this.Config[ApplicationConstants.AllowMaximum];
                         var value = (int)propertyValue;
                         if (!(value >= allowMinimum && value <= allowMaximum))

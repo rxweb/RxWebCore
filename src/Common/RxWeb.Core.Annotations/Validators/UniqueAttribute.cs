@@ -53,6 +53,8 @@ namespace RxWeb.Core.Annotations
                     }
                 }
             }
+            if (this.ValidationMessage != null && value != null)
+                this.ValidationMessage = this.ValidationMessage.Replace("{0}", property.Name).Replace("{1}", value.ToString());
             return this.ValidationMessage;
         }
 

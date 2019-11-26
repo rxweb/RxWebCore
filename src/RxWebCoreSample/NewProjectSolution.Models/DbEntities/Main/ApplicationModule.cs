@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
+using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
+using NewProjectSolution.BoundedContext.SqlContext;
 namespace NewProjectSolution.Models.Main
 {
-    [Table("ApplicationModules",Schema="core")]
+    [Table("ApplicationModules",Schema="dbo")]
     public partial class ApplicationModule
     {
 		#region ApplicationModuleId Annotations
@@ -21,7 +23,7 @@ namespace NewProjectSolution.Models.Main
 
         [Range(1,int.MaxValue)]
         [Required]
-        [RelationshipTableAttribue("ModuleMasters","core","","ModuleMasterId")]
+        [RelationshipTableAttribue("ModuleMasters","dbo","","ModuleMasterId")]
 		#endregion ModuleMasterId Annotations
 
         public int ModuleMasterId { get; set; }
