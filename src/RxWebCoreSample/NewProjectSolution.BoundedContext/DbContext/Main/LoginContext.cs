@@ -20,6 +20,8 @@ namespace NewProjectSolution.BoundedContext.Main
 		public DbSet<Role> Roles { get; set; }
 		public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<vUser> Users { get; set; }
+
+        
         #endregion DbSets
 
 

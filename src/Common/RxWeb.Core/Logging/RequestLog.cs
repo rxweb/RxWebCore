@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RxWeb.Core.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -38,7 +39,7 @@ namespace RxWeb.Core.Logging
             dictionary.Add("TraceTitle", "Standard Log");
             dictionary.Add("Uri", httpContext.Request.Host.Value);
             dictionary.Add("Verb", httpContext.Request.Method);
-            dictionary.Add("ClientIp", httpContext.Connection.RemoteIpAddress);
+            dictionary.Add("ClientIp", httpContext.Connection.RemoteIpAddress.ToString());
             dictionary.Add("RequestHeader", requestHeaders);
             dictionary.Add("InTime", DateTime.UtcNow);
             httpContext.Items.Add("TRACE", dictionary);
@@ -49,7 +50,7 @@ namespace RxWeb.Core.Logging
                 logDictionary["exception"] = httpContext.Items["EXCEPTION"] as Dictionary<string, object>;
             var entityAudit = new Dictionary<string, object>();
             if (httpContext.Items.ContainsKey("AUDITREQUEST"))
-                logDictionary["entityAudit"] = httpContext.Items["AUDITREQUEST"] ;
+                logDictionary["entityAudit"] = httpContext.Items["AUDITREQUEST"];
             if (httpContext.Items.ContainsKey("AUDITEXCEPTION"))
                 logDictionary["auditException"] = httpContext.Items["AUDITEXCEPTION"] as Dictionary<string, object>;
             var responseHeaders = string.Empty;
@@ -76,7 +77,8 @@ namespace RxWeb.Core.Logging
             {
                 var sqlConnection = new SqlConnection(logService.Database.GetDbConnection().ConnectionString);
                 var sqlCommand = new SqlCommand();
-                sqlCommand.Parameters.Add(new SqlParameter("@Log", JsonConvert.SerializeObject(log)));
+                var serializeText = JsonConvert.SerializeObject(log);
+                sqlCommand.Parameters.Add(new SqlParameter("@Log", serializeText.Replace("'",string.Empty)));
                 sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlCommand.CommandText = "core.ApplicationLog";
                 sqlCommand.Connection = sqlConnection;

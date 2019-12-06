@@ -5,12 +5,21 @@ using RxWeb.Core.Annotations;
 using RxWeb.Core.Data.Annotations;
 using RxWeb.Core.Sanitizers;
 using NewProjectSolution.BoundedContext.SqlContext;
+using System.Linq.Expressions;
+
 namespace NewProjectSolution.Models.Main
 {
+
     [Table("vUsers",Schema="dbo")]
+    [GlobalQueryFilter(nameof(vUser.Expression))]
     public partial class vUser
     {
-		#region UserId Annotations
+        public Expression<Func<vUser, bool>> Expression()
+        {
+            return x => x.UserName == "ajay";
+        }
+
+        #region UserId Annotations
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [System.ComponentModel.DataAnnotations.Key]

@@ -8,6 +8,8 @@ using NewProjectSolution.BoundedContext.Singleton;
 using RxWeb.Core.Data;
 using System;
 using System.Linq;
+using NewProjectSolution.Models.Main;
+using System.Linq.Expressions;
 
 namespace NewProjectSolution.BoundedContext.SqlContext
 {
@@ -48,7 +50,11 @@ namespace NewProjectSolution.BoundedContext.SqlContext
                 if (schemaInfo != null && schemaInfo.Keys.Contains(DbContext.Name))
                     modelBuilder.AddSchemaBasedTenant(schemaInfo[DbContext.Name]);
             }
+            modelBuilder.GlobalQueryFilter();
+            //modelBuilder.Entity(typeof(vUser)).HasQueryFilter(Expression());
         }
+
+        
 
         private int GetTenantId()
         {
