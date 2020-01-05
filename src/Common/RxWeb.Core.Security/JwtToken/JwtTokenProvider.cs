@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace RxWeb.Core.Security.JwtToken
     public class JwtTokenProvider : IJwtTokenProvider
     {
         private IDataProtector DataProtector { get; set; }
-        public JwtTokenProvider(IDataProtectionProvider dataProtection) {
+        public JwtTokenProvider(IDataProtectionProvider dataProtection,IHttpContextAccessor contextAccessor) {
             this.DataProtector = dataProtection.CreateProtector(typeof(JwtTokenProvider).FullName);
         }
         public virtual ClaimsPrincipal ValidateToken(string securityKey, string jsonWebToken)

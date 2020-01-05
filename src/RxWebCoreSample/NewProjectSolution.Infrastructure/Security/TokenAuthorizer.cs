@@ -49,20 +49,27 @@ namespace NewProjectSolution.Infrastructure.Security
 
         public async Task<ClaimsPrincipal> ValidateTokenAsync(HttpContext context)
         {
-            if (context.Request.Headers.ContainsKey("Authorization") && context.Request.Headers.ContainsKey("x-request"))
+            if (context.Request.Headers.TryGetValue(AUTHORIZATION_HEADER,out var token) && context.Request.Cookies.TryGetValue("request_identity", out var requestIdentity))
             {
                 var loginUow = context.RequestServices.GetService(typeof(ILoginUow)) as ILoginUow;
-                var securityKey = context.Request.Headers["x-request"];
-                var token = context.Request.Headers["Authorization"];
-                var dbToken = await UserAccessConfigInfo.GetTokenAsync(securityKey, loginUow);
-                return dbToken == string.Empty ? null : this.TokenProvider.ValidateToken(securityKey, token);
+                var dbToken = await UserAccessConfigInfo.GetTokenAsync(requestIdentity, loginUow);
+                return string.IsNullOrEmpty(dbToken) ? null : this.TokenProvider.ValidateToken(requestIdentity, token);
             }
+            return null;
+        }
+
+        public ClaimsPrincipal AnonymousUserValidateToken(HttpContext context)
+        {
+            if (context.Request.Headers.TryGetValue(AUTHORIZATION_HEADER, out var token) && context.Request.Cookies.TryGetValue("anonymous_user", out var anonymousUser))
+                return this.TokenProvider.ValidateToken(anonymousUser, token);
             return null;
         }
 
         private IJwtTokenProvider TokenProvider { get; set; }
 
         private UserAccessConfigInfo UserAccessConfigInfo { get; set; }
+
+        private const string AUTHORIZATION_HEADER = "Authorization";
 
     }
 }

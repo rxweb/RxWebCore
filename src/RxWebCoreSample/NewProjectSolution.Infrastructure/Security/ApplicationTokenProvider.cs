@@ -8,10 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace NewProjectSolution.Infrastructure.Security
 {
-     public class ApplicationTokenProvider : IApplicationTokenProvider
+    public class ApplicationTokenProvider : IApplicationTokenProvider
     {
         private ILoginUow LoginUow { get; set; }
         private UserAccessConfigInfo UserAccessConfig { get; set; }
@@ -19,28 +20,35 @@ namespace NewProjectSolution.Infrastructure.Security
 
         private IUserClaim UserClaim { get; set; }
 
-        public ApplicationTokenProvider(IJwtTokenProvider tokenProvider, UserAccessConfigInfo userAccessConfig, ILoginUow loginUow,IUserClaim userClaim)
+        private IHttpContextAccessor ContextAccessor { get; set; }
+
+        public ApplicationTokenProvider(IJwtTokenProvider tokenProvider, UserAccessConfigInfo userAccessConfig, ILoginUow loginUow, IUserClaim userClaim, IHttpContextAccessor contextAccessor)
         {
             TokenProvider = tokenProvider;
             UserAccessConfig = userAccessConfig;
             LoginUow = loginUow;
             UserClaim = userClaim;
+            ContextAccessor = contextAccessor;
         }
-        public async Task<KeyValuePair<string, string>> GetTokenAsync(vUser user)
+        public async Task<string> GetTokenAsync(vUser user)
         {
+            var expirationTime = user.UserId == 0 ? DateTime.UtcNow.AddDays(1) : DateTime.UtcNow.AddMinutes(30);
             var token = TokenProvider.WriteToken(new[]{
                 new Claim(
                     ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Anonymous, (user.UserId == 0).ToString()),
                     new Claim(ClaimTypes.Locality,user.LanguageCode),
                     new Claim(CustomClaimTypes.TimeZone,user.ApplicationTimeZoneName)
-                    }, "Web", "User", DateTime.Now.AddDays(2));
-            await UserAccessConfig.SaveTokenAsync(user.UserId, "web", token, LoginUow);
-            return token;
+                    }, "Web", "User",expirationTime);
+            if(user.UserId !=0) await UserAccessConfig.SaveTokenAsync(user.UserId, "web", token, LoginUow);
+            this.AddCookie(user, token.Key);
+            return token.Value;
         }
 
-        public async Task<KeyValuePair<string, string>> RefereshTokenAsync(vUser user,UserConfig userConfig)
+        public async Task<string> RefereshTokenAsync(vUser user, UserConfig userConfig)
         {
-            if (!string.IsNullOrEmpty(userConfig.LanguageCode)) {
+            if (!string.IsNullOrEmpty(userConfig.LanguageCode))
+            {
                 var userRecord = await LoginUow.Repository<User>().SingleAsync(t => t.UserId == user.UserId);
                 userRecord.LanguageCode = userConfig.LanguageCode;
                 await LoginUow.RegisterDirtyAsync<User>(userRecord);
@@ -50,16 +58,29 @@ namespace NewProjectSolution.Infrastructure.Security
             return await this.GetTokenAsync(user);
         }
 
-        public async Task RemoveTokenAsync(UserConfig userConfig) =>
-            await UserAccessConfig.RemoveTokenAsync(UserClaim.UserId,userConfig.AudienceType , LoginUow);
+        public async Task RemoveTokenAsync(UserConfig userConfig) {
+            this.RemoveCookie();
+            await UserAccessConfig.RemoveTokenAsync(UserClaim.UserId, userConfig.AudienceType, LoginUow);
+        }
+        
 
+        private void AddCookie(vUser user, string value) {
+            var cookieName = user.UserId == 0 ? ANONYMOUS : REQUEST_IDENTITY;
+            if (cookieName == REQUEST_IDENTITY && ContextAccessor.HttpContext.Request.Cookies.ContainsKey(ANONYMOUS))
+                ContextAccessor.HttpContext.Response.Cookies.Delete(ANONYMOUS);
+            ContextAccessor.HttpContext.Response.Cookies.Append(REQUEST_IDENTITY, value);
+        }
+        private void RemoveCookie() => ContextAccessor.HttpContext.Response.Cookies.Delete(REQUEST_IDENTITY);
+
+        private const string REQUEST_IDENTITY = "request_identity";
+        private const string ANONYMOUS = "anonymous";
     }
 
     public interface IApplicationTokenProvider
     {
-        Task<KeyValuePair<string, string>> GetTokenAsync(vUser user);
+        Task<string> GetTokenAsync(vUser user);
 
-        Task<KeyValuePair<string, string>> RefereshTokenAsync(vUser user, UserConfig userConfig);
+        Task<string> RefereshTokenAsync(vUser user, UserConfig userConfig);
 
         Task RemoveTokenAsync(UserConfig userConfig);
     }
