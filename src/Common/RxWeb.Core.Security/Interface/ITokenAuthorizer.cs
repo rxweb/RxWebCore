@@ -12,5 +12,7 @@ namespace RxWeb.Core.Security
         Task MessageReceived(MessageReceivedContext context);
         Task TokenValidated(TokenValidatedContext context);
         Task<ClaimsPrincipal> ValidateTokenAsync(HttpContext context);
+
+        ClaimsPrincipal AnonymousUserValidateToken(HttpContext context);
     }
 }

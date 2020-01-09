@@ -4,6 +4,7 @@ using NewProjectSolution.Infrastructure.Security;
 using NewProjectSolution.Models.Main;
 using NewProjectSolution.Models.ViewModels;
 using NewProjectSolution.UnitOfWork.Main;
+using RxWeb.Core.AspNetCore.Filters;
 using RxWeb.Core.Security.Cryptography;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,15 @@ namespace NewProjectSolution.Api.Controllers
             PasswordHash = passwordHash;
         }
 
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
+        public async Task<IActionResult> Get() {
+            var token = await ApplicationTokenProvider.GetTokenAsync(new vUser { UserId=0,ApplicationTimeZoneName=string.Empty,LanguageCode=string.Empty });
+            return Ok(token);
+        }
+
+        [HttpPost]
+        [AllowAnonymousUser]
         public async Task<IActionResult> Post(AuthenticationModel authentication)
         {
             //var inactive = await LoginUow.Repository<InactiveUser>().AllAsync();

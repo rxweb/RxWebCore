@@ -49,13 +49,19 @@ namespace NewProjectSolution.Api.Bootstrap
             {
                 options.Preload = true;
                 options.IncludeSubDomains = true;
-                options.MaxAge = TimeSpan.FromDays(60);
+                options.MaxAge = TimeSpan.FromDays(365);
             });
 
 
             serviceCollection.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
             serviceCollection.AddAuthorization();
             serviceCollection.AddRxWebJwtAuthentication();
+
+            serviceCollection.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
 
         }
@@ -86,7 +92,7 @@ namespace NewProjectSolution.Api.Bootstrap
 
             applicationBuilder.UseAuthentication();
             applicationBuilder.UseAuthorization();
-
+            
             applicationBuilder.HandleException();
 
             applicationBuilder.SetSecurityHeaders();

@@ -8,6 +8,7 @@ using NewProjectSolution.Api.Bootstrap;
 using RxWeb.Core.Extensions;
 using RxWeb.Core.AspNetCore.Extensions;
 using Newtonsoft.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace NewProjectSolution.Api
 {
@@ -34,6 +35,9 @@ namespace NewProjectSolution.Api
             services.AddScopedService();
             services.AddDbContextService();
             services.AddControllers();
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "New Project", Version = "v1" }));
+
             services.AddMvc(options=> {
                 options.AddRxWebSanitizers();
                 options.AddValidation();
@@ -45,6 +49,7 @@ namespace NewProjectSolution.Api
                     {
                         var res = resolver as DefaultContractResolver;
                         res.NamingStrategy = null;
+                        
                     }
                     oo.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 }); 
@@ -60,7 +65,9 @@ namespace NewProjectSolution.Api
 
             app.UseSecurity(env);
 
-            
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "New Project"));
 
             app.UseStaticFiles();
 
