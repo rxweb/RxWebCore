@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AspNetCore\RxWeb.Core.AspNetCore\RxWeb.Core.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Common\Rxweb.Core.Cache\RxWeb.Core.Cache.csproj" />
+    <ProjectReference Include="..\..\Common\RxWeb.Core.Common\RxWeb.Core.Common.csproj" />
     <ProjectReference Include="..\NewProjectSolution.Domain\NewProjectSolution.Domain.csproj" />
     <ProjectReference Include="..\NewProjectSolution.BoundedContext\NewProjectSolution.BoundedContext.csproj" />
     <ProjectReference Include="..\NewProjectSolution.Models\NewProjectSolution.Models.csproj" />

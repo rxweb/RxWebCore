@@ -29,10 +29,33 @@ namespace RxWeb.Core.Data.Audit
                 KeyId = Convert.ToInt32(newValues[keys.Properties.First().Name]),
                 EventType = entityState.ToString(),
                 TableName = tableAttribute.Name,
-                AuditRecordDetails = entityState == EntityState.Modified ? GetEntityColumnChangedInfo(newValues, oldValues) : new List<CoreAuditRecordDetail>()
+                AuditRecordDetails = entityState == EntityState.Modified ? GetEntityColumnChangedInfo(newValues, oldValues) : GetEntityColumnValues(newValues)
             };
             if ((entityState == EntityState.Modified && auditRecord.AuditRecordDetails.Count > 0) || (entityState == EntityState.Added || entityState == EntityState.Deleted))
                 CoreAudits.Add(auditRecord);
+        }
+
+        private List<CoreAuditRecordDetail> GetEntityColumnValues(PropertyValues newValues)
+        {
+            var auditRecordDetails = new List<CoreAuditRecordDetail>();
+            var keys = newValues.EntityType.FindPrimaryKey();
+            foreach (var property in newValues.Properties)
+            {
+                var oldValue = string.Empty;
+                var newValue = newValues[property.Name];
+                if (newValue != null && keys.Properties.Count(t => t.Name == property.Name) == 0)
+                {
+                    var auditRecordDetail = new CoreAuditRecordDetail
+                    {
+                        ColumnName = property.Name,
+                        NewValue = newValue.ToString(),
+                        OldValue = oldValue
+                    };
+                    auditRecordDetails.Add(auditRecordDetail);
+                }
+
+            }
+            return auditRecordDetails;
         }
 
         public List<CoreAuditRecordDetail> GetEntityColumnChangedInfo(PropertyValues newValues, PropertyValues oldValues)
