@@ -35,17 +35,7 @@ namespace NewProjectSolution.Infrastructure.Security
             var principal = this.ValidateTokenAsync(context.HttpContext).Result;
             if (principal != null)
             {
-                List<Claim> claimCollection = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Andras")
-                , new Claim(ClaimTypes.Country, "Sweden")
-                , new Claim(ClaimTypes.Gender, "M")
-                , new Claim(ClaimTypes.Surname, "Nemes")
-                , new Claim(ClaimTypes.Email, "hello@me.com")
-                , new Claim(ClaimTypes.Role, "IT")
-            };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claimCollection, "My e-commerce website");
-                context.Principal = new ClaimsPrincipal(claimsIdentity);
+                context.Principal = principal;
                 context.Success();
             }
             else
