@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using NewProjectSolution.Infrastructure.Singleton;
 using NewProjectSolution.UnitOfWork.Main;
+using System.Collections.Generic;
 
 namespace NewProjectSolution.Infrastructure.Security
 {
@@ -34,7 +35,17 @@ namespace NewProjectSolution.Infrastructure.Security
             var principal = this.ValidateTokenAsync(context.HttpContext).Result;
             if (principal != null)
             {
-                context.Principal = principal;
+                List<Claim> claimCollection = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, "Andras")
+                , new Claim(ClaimTypes.Country, "Sweden")
+                , new Claim(ClaimTypes.Gender, "M")
+                , new Claim(ClaimTypes.Surname, "Nemes")
+                , new Claim(ClaimTypes.Email, "hello@me.com")
+                , new Claim(ClaimTypes.Role, "IT")
+            };
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claimCollection, "My e-commerce website");
+                context.Principal = new ClaimsPrincipal(claimsIdentity);
                 context.Success();
             }
             else
@@ -60,7 +71,7 @@ namespace NewProjectSolution.Infrastructure.Security
 
         public ClaimsPrincipal AnonymousUserValidateToken(HttpContext context)
         {
-            if (context.Request.Headers.TryGetValue(AUTHORIZATION_HEADER, out var token) && context.Request.Cookies.TryGetValue("anonymous_user", out var anonymousUser))
+            if (context.Request.Headers.TryGetValue(AUTHORIZATION_HEADER, out var token) && context.Request.Cookies.TryGetValue("anonymous", out var anonymousUser))
                 return this.TokenProvider.ValidateToken(anonymousUser, token);
             return null;
         }

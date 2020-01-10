@@ -68,7 +68,7 @@ namespace NewProjectSolution.Infrastructure.Security
             var cookieName = user.UserId == 0 ? ANONYMOUS : REQUEST_IDENTITY;
             if (cookieName == REQUEST_IDENTITY && ContextAccessor.HttpContext.Request.Cookies.ContainsKey(ANONYMOUS))
                 ContextAccessor.HttpContext.Response.Cookies.Delete(ANONYMOUS);
-            ContextAccessor.HttpContext.Response.Cookies.Append(REQUEST_IDENTITY, value);
+            ContextAccessor.HttpContext.Response.Cookies.Append(cookieName, value);
         }
         private void RemoveCookie() => ContextAccessor.HttpContext.Response.Cookies.Delete(REQUEST_IDENTITY);
 

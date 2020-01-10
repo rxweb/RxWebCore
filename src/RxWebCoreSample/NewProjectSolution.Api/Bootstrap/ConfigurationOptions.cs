@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewProjectSolution.Models;
+using RxWeb.Core.Data.Models;
 
 namespace NewProjectSolution.Api.Bootstrap
 {

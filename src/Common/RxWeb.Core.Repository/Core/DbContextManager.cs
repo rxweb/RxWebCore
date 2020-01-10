@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace RxWeb.Core.Data
@@ -15,9 +19,32 @@ namespace RxWeb.Core.Data
             Context = (DbContext)serviceProvider.GetService(typeof(DbContextEntity));
         }
 
-        public async Task<IEnumerable<TEntity>> SqlQueryAsync<TEntity>(string sqlQuery, params object[] parameters) where TEntity : class {
-            var setDbSet = Context.Set<TEntity>();
-           return await setDbSet.FromSql(sqlQuery, parameters).ToListAsync();
+        public async Task<IEnumerable<TEntity>> StoreProc<TEntity>(string name, SqlParameter[] sqlParameters) where TEntity : new()
+        {
+            var sqlConnection = new SqlConnection(Context.Database.GetDbConnection().ConnectionString);
+            SqlCommand sqlCommand = new SqlCommand(name, sqlConnection);
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+            foreach (var param in sqlParameters) 
+                sqlCommand.Parameters.Add(param);
+            await sqlConnection.OpenAsync();
+            var result = new List<TEntity>();
+            var dataReader = await sqlCommand.ExecuteReaderAsync();
+            while (dataReader.Read()) {
+                var entity = new TEntity();
+                var properties = entity.GetType().GetProperties();
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    if (!dataReader.IsDBNull(i))
+                    {
+                        string fieldName = dataReader.GetName(i);
+                        var propertyInfo = properties.SingleOrDefault(m => string.Equals(m.Name, fieldName, StringComparison.OrdinalIgnoreCase));
+                        if (propertyInfo != null)
+                            propertyInfo.SetValue(entity,dataReader.GetValue(i));
+                    }
+                }
+                result.Add(entity);
+            }
+            return result;
         }
         public async Task<IDbContextTransaction> BeginTransactionAsync() {
             DbContextTransaction = await Context.Database.BeginTransactionAsync();

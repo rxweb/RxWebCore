@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using RxWeb.Core;
 using NewProjectSolution.UnitOfWork.Main;
 using NewProjectSolution.Models.Main;
+using NewProjectSolution.Models.ViewModels;
 
 namespace NewProjectSolution.Domain.MasterModule
 {
@@ -13,14 +14,14 @@ namespace NewProjectSolution.Domain.MasterModule
             this.Uow = uow;
         }
 
-        public Task<object> GetAsync(Dictionary<string, object> parameters)
+        public Task<object> GetAsync(QueryModel parameters)
         {
             throw new NotImplementedException();
         }
 
-        public Task<object> GetBy(Dictionary<string, object> parameters)
+        public Task<object> GetBy(QueryModel parameters)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(parameters as object);
         }
         
 
@@ -46,12 +47,12 @@ namespace NewProjectSolution.Domain.MasterModule
             await Uow.CommitAsync();
         }
 
-        public HashSet<string> DeleteValidation(Dictionary<string, object> parameters)
+        public HashSet<string> DeleteValidation(QueryModel parameters)
         {
             return ValidationMessages;
         }
 
-        public Task DeleteAsync(Dictionary<string, object> parameters)
+        public Task DeleteAsync(QueryModel parameters)
         {
             throw new NotImplementedException();
         }
@@ -61,5 +62,5 @@ namespace NewProjectSolution.Domain.MasterModule
         private HashSet<string> ValidationMessages { get; set; } = new HashSet<string>();
     }
 
-    public interface IUserRoleDomain : ICoreDomain<UserRole> { }
+    public interface IUserRoleDomain : ICoreDomain<UserRole, QueryModel> { }
 }

@@ -1,13 +1,14 @@
+using Microsoft.Extensions.Options;
+using RxWeb.Core.Data;
+using RxWeb.Core.Data.Models;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using NewProjectSolution.Models;
 
 namespace NewProjectSolution.BoundedContext.Singleton
 {
-    public class TenantDbConnectionInfo
+    public class TenantDbConnectionInfo : ITenantDbConnectionInfo
     {
 
         public TenantDbConnectionInfo(IOptions<DatabaseConfig> databaseConfig)

@@ -16,12 +16,12 @@ namespace RxWeb.Core.AspNetCore
             this.Uow = uow;
         }
 
-        public virtual async Task<IEnumerable<T>> AllAsync<T>() where T : class =>
+        protected virtual async Task<IEnumerable<T>> AllAsync<T>() where T : class =>
                                         await this.Uow.Repository<T>().AllAsync();
-         
-        public IEnumerable<T> OrderBy<T>(Expression<Func<T, bool>> predicate) where T:class =>  this.Uow.Repository<T>().Queryable().OrderBy(predicate);
 
-        public IEnumerable<T> Where<T>(Expression<Func<T, bool>> predicate) where T : class => this.Uow.Repository<T>().FindBy(predicate);
+        protected IEnumerable<T> OrderBy<T>(Expression<Func<T, bool>> predicate) where T:class =>  this.Uow.Repository<T>().Queryable().OrderBy(predicate);
+
+        protected IEnumerable<T> Where<T>(Expression<Func<T, bool>> predicate) where T : class => this.Uow.Repository<T>().FindBy(predicate);
 
     }
 }

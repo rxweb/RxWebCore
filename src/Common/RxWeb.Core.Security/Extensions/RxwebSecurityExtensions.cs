@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using RxWeb.Core.Security;
+using RxWeb.Core.Security.Authorization;
 using RxWeb.Core.Security.Cryptography;
 using RxWeb.Core.Security.JwtToken;
 
@@ -8,6 +10,10 @@ namespace RxWeb.Core.Extensions
 {
     public static class RxwebSecurityExtensions
     {
+        public static void AddRxWebAuthorization(this IServiceCollection serviceCollection) {
+            serviceCollection.AddSingleton<IAuthorizationPolicyProvider, AccessPolicyProvider>();
+            serviceCollection.AddSingleton<IAuthorizationHandler, AuthorizationPermissionHandler>();
+        }
         public static void AddRxWebJwtAuthentication(this IServiceCollection serviceCollection) {
             serviceCollection.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
             serviceCollection.AddScoped<IUserClaim, UserClaim>();

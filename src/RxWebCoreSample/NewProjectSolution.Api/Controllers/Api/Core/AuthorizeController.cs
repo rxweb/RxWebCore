@@ -5,13 +5,12 @@ using NewProjectSolution.Models.Main;
 using NewProjectSolution.Models.ViewModels;
 using NewProjectSolution.UnitOfWork.Main;
 using Newtonsoft.Json;
-using RxWeb.Core;
 using RxWeb.Core.Security;
 using System.Threading.Tasks;
 
 namespace NewProjectSolution.Api.Controllers
 {
-        [ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class AuthorizeController : ControllerBase
     {

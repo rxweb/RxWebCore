@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RxWeb.Core.AspNetCore.Extensions;
 using RxWeb.Core.Data;
@@ -15,13 +16,17 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public virtual async Task<IActionResult> Get() => Ok(await this.Uow.Repository<ListEntity>().AllAsync());
 
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public virtual async Task<IActionResult> Get(int id) => Ok(await this.Uow.Repository<RecordEntity>().FindByKeyAsync(id));
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Post([FromBody]T entity)
         {
             await this.Uow.RegisterNewAsync<T>(entity);
@@ -30,6 +35,8 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Put(int id, [FromBody]T entity)
         {
             await Uow.RegisterDirtyAsync<T>(entity);
@@ -38,6 +45,8 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<T> entity)
         {
             var serverEntity = Uow.Repository<T>().FindByKey(id);
@@ -46,12 +55,17 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Delete(int id)
         {
             var entity = Uow.Repository<T>().FindByKey(id);
-            await Uow.RegisterDeletedAsync<T>(entity);
-            await Uow.CommitAsync();
-            return NoContent();
+            if (entity != null) {
+                await Uow.RegisterDeletedAsync<T>(entity);
+                await Uow.CommitAsync();
+                return NoContent();
+            }
+            return NotFound();
         }
     }
 }

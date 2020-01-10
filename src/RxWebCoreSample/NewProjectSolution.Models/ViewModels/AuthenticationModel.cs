@@ -12,23 +12,19 @@ namespace NewProjectSolution.Models.ViewModels
             return false;
         }
     }
-    public enum Status { 
-    Active=1,
-    InActive
-    }
+    
     [ModelValidation("validationTitle")]
     public partial class AuthenticationModel
     {
         [OnAction("POST",RxWeb.Core.Sanitizers.Enums.ActionValueType.DateTimeUtc)]
-        public DateTimeOffset CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Required]
         public string UserName { get; set; }
 
         [Required]
         public string Password { get; set; }
-        [Required]
-        public Status StatusId { get; set; }
+        
     }
 }
 

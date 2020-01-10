@@ -16,6 +16,8 @@ namespace NewProjectSolution.Models.Extensions
             else
                 return options.EnableRetryOnFailure();
         }
+
+        
     }
 }
 

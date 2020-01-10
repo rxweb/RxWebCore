@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace RxWeb.Core
 {
-    public interface ICoreCollectionDomain<T> : ICoreDomain<T>
+    public interface ICoreCollectionDomain<T, FromQuery> : ICoreDomain<T,FromQuery>
     {
         HashSet<string> AddValidation(List<T> entity);
         HashSet<string> UpdateValidation(List<T> entity);

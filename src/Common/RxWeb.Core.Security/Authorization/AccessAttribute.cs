@@ -1,11 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using RxWeb.Core.Security.Singleton;
+using System;
 
 namespace RxWeb.Core.Security.Authorization
 {
     public class AccessAttribute : AuthorizeAttribute
     {
         const string POLICY_PREFIX = "ROLE_";
-        public AccessAttribute(int applicationModuleId) => ApplicationModuleId = applicationModuleId;
+        public AccessAttribute(int applicationModuleId, string actionType = null,Type haveAccess = null) {
+            this.AccessAttributeInfo = new AccessAtributeInfo {
+                ActionType = actionType,
+                HaveAccess = haveAccess
+            };
+            
+            ApplicationModuleId = applicationModuleId; 
+        
+        }
 
         public int ApplicationModuleId
         {
@@ -20,7 +30,10 @@ namespace RxWeb.Core.Security.Authorization
             set
             {
                 Policy = $"{POLICY_PREFIX}{value.ToString()}";
+                PolicyProviderAdditionalValue.Values.AddOrUpdate(Policy, this.AccessAttributeInfo,(x,y)=>this.AccessAttributeInfo);
             }
         }
+
+        private AccessAtributeInfo AccessAttributeInfo { get; set; }
     }
 }

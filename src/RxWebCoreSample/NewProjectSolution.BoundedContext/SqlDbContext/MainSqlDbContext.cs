@@ -2,14 +2,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NewProjectSolution.BoundedContext.Singleton;
-using NewProjectSolution.Models;
+using RxWeb.Core.Data;
+using RxWeb.Core.Data.BoundedContext;
+using RxWeb.Core.Data.Models;
 using System;
 
 namespace NewProjectSolution.BoundedContext.SqlContext
 {
     public class MainSqlDbContext : BaseDbContext, IMainDatabaseFacade, IDisposable
     {
-        public MainSqlDbContext(IOptions<DatabaseConfig> databaseConfig, IHttpContextAccessor contextAccessor, TenantDbConnectionInfo tenantDbConnection) :base(databaseConfig, contextAccessor,tenantDbConnection){}
+        public MainSqlDbContext(IOptions<DatabaseConfig> databaseConfig, IHttpContextAccessor contextAccessor, ITenantDbConnectionInfo tenantDbConnection) :base(databaseConfig, contextAccessor,tenantDbConnection){}
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

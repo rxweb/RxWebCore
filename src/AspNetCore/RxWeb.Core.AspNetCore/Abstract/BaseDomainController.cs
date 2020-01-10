@@ -1,29 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.ObjectPool;
+using Newtonsoft.Json.Linq;
 using RxWeb.Core.AspNetCore.Binder;
 using RxWeb.Core.AspNetCore.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace RxWeb.Core.AspNetCore
 {
-    public abstract class BaseDomainController<T> : ControllerBase where T : class
+    public abstract class BaseDomainController<T,FromQuery> : ControllerBase where T : class where FromQuery : class
     {
-        protected ICoreDomain<T> Domain { get; set; }
+        protected ICoreDomain<T,FromQuery> Domain { get; set; }
 
-        public BaseDomainController(ICoreDomain<T> domain)
+        public BaseDomainController(ICoreDomain<T, FromQuery> domain)
         {
             this.Domain = domain;
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Get([ModelBinder(typeof(QueryParamsBinder))]Dictionary<string,object> queryParams) => Ok(await this.Domain.GetAsync(queryParams));
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public virtual async Task<IActionResult> Get([ModelBinder(typeof(QueryParamsBinder))]JObject jObject) => Ok(await this.Domain.GetAsync(jObject.ToObject<FromQuery>()));
 
 
         [HttpGet("{id}")]
-        public virtual async Task<IActionResult> GetBy([ModelBinder(typeof(QueryParamsBinder))]Dictionary<string,object> queryParams) => Ok(await this.Domain.GetBy(queryParams));
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public virtual async Task<IActionResult> GetBy([ModelBinder(typeof(QueryParamsBinder))]JObject jObject) => Ok(await this.Domain.GetBy(jObject.ToObject<FromQuery>()));
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Post([FromBody]T entity)
         {
             var validations = this.Domain.AddValidation(entity);
@@ -36,6 +44,8 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> Put(int id, [FromBody]T entity)
         {
             var validations = this.Domain.UpdateValidation(entity);
@@ -48,12 +58,15 @@ namespace RxWeb.Core.AspNetCore
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<IActionResult> Delete([ModelBinder(typeof(QueryParamsBinder))]Dictionary<string,object> queryParams)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public virtual async Task<IActionResult> Delete([ModelBinder(typeof(QueryParamsBinder))]JObject jObject)
         {
-            var validations = this.Domain.DeleteValidation(queryParams);
+            var model = jObject.ToObject<FromQuery>();
+            var validations = this.Domain.DeleteValidation(model);
             if (validations.Count() == 0)
             {
-                await this.Domain.DeleteAsync(queryParams);
+                await this.Domain.DeleteAsync(model);
                 return NoContent();
             }
             return BadRequest(validations);

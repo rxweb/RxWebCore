@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,6 +18,6 @@ namespace RxWeb.Core.Data
 
         Task CommitAsync(params ICoreUnitOfWork[] coreUnitOfWorks);
 
-        Task<IEnumerable<TEntity>> SqlQueryAsync<TEntity>(string sqlQuery, params object[] parameters) where TEntity : class;
+        Task<IEnumerable<TEntity>> StoreProc<TEntity>(string name, SqlParameter[] sqlParameters) where TEntity : new();
     }
 }

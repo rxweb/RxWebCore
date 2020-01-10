@@ -1,24 +1,21 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NewProjectSolution.BoundedContext.SqlContext;
 using NewProjectSolution.Infrastructure.Security;
 using NewProjectSolution.Models;
+using RxWeb.Core.AspNetCore.Extensions;
 using RxWeb.Core.Extensions;
-using RxWeb.Core.Security;
-using RxWeb.Core.Security.Authorization;
-using RxWeb.Core.Security.JwtToken;
-using RxWeb.Core;
-using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
-using System.Net;
-using System.Linq;
-using NewProjectSolution.BoundedContext.SqlContext;
 using RxWeb.Core.Logging;
+using RxWeb.Core.Security;
+using RxWeb.Core.Security.JwtToken;
+using System;
+using System.Linq;
+using System.Net;
 
 namespace NewProjectSolution.Api.Bootstrap
 {
@@ -32,8 +29,7 @@ namespace NewProjectSolution.Api.Bootstrap
         {
 			configuration.GetSection(SecuritySection).Bind(SecurityConfig);
 
-            serviceCollection.AddSingleton<IAuthorizationPolicyProvider, AccessPolicyProvider>();
-            serviceCollection.AddSingleton<IAuthorizationHandler, AccessPermissionHandler>();
+            serviceCollection.AddSingleton<IAccessPermissionHandler, AccessPermissionHandler>();
 
             serviceCollection.AddCors(options =>
             {
@@ -56,7 +52,7 @@ namespace NewProjectSolution.Api.Bootstrap
             serviceCollection.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
             serviceCollection.AddAuthorization();
             serviceCollection.AddRxWebJwtAuthentication();
-
+            serviceCollection.AddRxWebAuthorization();
             serviceCollection.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -72,6 +68,8 @@ namespace NewProjectSolution.Api.Bootstrap
             if (environment.IsDevelopment())
             {
                 applicationBuilder.UseDeveloperExceptionPage();
+                applicationBuilder.UseSwagger();
+                applicationBuilder.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "New Project"));
             }
             else
             {
@@ -79,6 +77,7 @@ namespace NewProjectSolution.Api.Bootstrap
 					applicationBuilder.SetIpSafeList();
                 applicationBuilder.UseHsts();
                 applicationBuilder.UseHttpsRedirection();
+                applicationBuilder.SetSecurityHeaders();
             }
 
 			applicationBuilder.UseLogging(typeof(ILogDatabaseFacade));
@@ -94,8 +93,6 @@ namespace NewProjectSolution.Api.Bootstrap
             applicationBuilder.UseAuthorization();
             
             applicationBuilder.HandleException();
-
-            applicationBuilder.SetSecurityHeaders();
 
         }
 

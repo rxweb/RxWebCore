@@ -11,7 +11,7 @@ namespace NewProjectSolution.Models.Main
 {
 
     [Table("vUsers",Schema="dbo")]
-    [GlobalQueryFilter(nameof(vUser.Expression))]
+    //[GlobalQueryFilter(nameof(vUser.Expression))]
     public partial class vUser
     {
         public Expression<Func<vUser, bool>> Expression()

@@ -10,4 +10,11 @@ namespace NewProjectSolution.Models.ViewModels
 
         public string LanguageCode { get; set; }
     }
+
+    public class QueryModel
+    {
+        public int UserId { get; set; }
+
+        public int Id { get; set; }
+    }
 }

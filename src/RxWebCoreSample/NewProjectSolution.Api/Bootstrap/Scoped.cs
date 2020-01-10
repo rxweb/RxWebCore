@@ -23,7 +23,6 @@ namespace NewProjectSolution.Api.Bootstrap
         {
             serviceCollection.AddScoped<IRepositoryProvider, RepositoryProvider>();
             serviceCollection.AddScoped<ITokenAuthorizer, TokenAuthorizer>();
-            serviceCollection.AddScoped<ILocalizationInfo, LocalizationInfo>();
             serviceCollection.AddScoped<IModelValidation, ModelValidation>();
 			serviceCollection.AddScoped<IAuditLog, AuditLog>();
 			serviceCollection.AddScoped<IApplicationTokenProvider, ApplicationTokenProvider>();
