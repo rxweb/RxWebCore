@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using RxWeb.Core.Security;
-using System;
-using System.Threading.Tasks;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using NewProjectSolution.Infrastructure.Singleton;
 using NewProjectSolution.UnitOfWork.Main;
-using System.Collections.Generic;
+using RxWeb.Core.Security;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace NewProjectSolution.Infrastructure.Security
 {

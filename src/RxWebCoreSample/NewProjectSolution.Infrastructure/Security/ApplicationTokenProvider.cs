@@ -1,14 +1,12 @@
-using NewProjectSolution.Models.Const;
+using Microsoft.AspNetCore.Http;
 using NewProjectSolution.Infrastructure.Singleton;
 using NewProjectSolution.Models.Main;
 using NewProjectSolution.Models.ViewModels;
 using NewProjectSolution.UnitOfWork.Main;
 using RxWeb.Core.Security;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace NewProjectSolution.Infrastructure.Security
 {

@@ -14,13 +14,6 @@ namespace NewProjectSolution.Api.Controllers
     [Route("api/[controller]")]
     public class AuthorizeController : ControllerBase
     {
-        private ILoginUow LoginUow { get; set; }
-
-        private IUserClaim UserClaim { get; set; }
-        private UserAccessConfigInfo UserAccessConfig { get; set; }
-
-        private IApplicationTokenProvider ApplicationTokenProvider { get; set; }
-
         public AuthorizeController(ILoginUow loginUow, UserAccessConfigInfo userAccessConfig, IUserClaim userClaim,IApplicationTokenProvider applicationTokenProvider)
         {
             this.LoginUow = loginUow;
@@ -37,7 +30,7 @@ namespace NewProjectSolution.Api.Controllers
         }
 
         [HttpPost(LOGOUT)]
-        public async Task<IActionResult> LogOut(UserConfig userConfig)
+        public async Task<IActionResult> Logout(UserConfig userConfig)
         {
             await ApplicationTokenProvider.RemoveTokenAsync(userConfig);
             return Ok();
@@ -56,6 +49,12 @@ namespace NewProjectSolution.Api.Controllers
         const string ACCESS = "access";
 
         const string REFRESH = "refresh";
+
+
+        private ILoginUow LoginUow { get; set; }
+        private IUserClaim UserClaim { get; set; }
+        private UserAccessConfigInfo UserAccessConfig { get; set; }
+        private IApplicationTokenProvider ApplicationTokenProvider { get; set; }
     }
 }
 

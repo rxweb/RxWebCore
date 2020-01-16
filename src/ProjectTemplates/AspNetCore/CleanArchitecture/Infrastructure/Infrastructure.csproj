@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\$ext_safeprojectname$.Models\$ext_safeprojectname$.Models.csproj" />
+    <ProjectReference Include="..\$ext_safeprojectname$.BoundedContext\$ext_safeprojectname$.BoundedContext.csproj" />
+    <ProjectReference Include="..\$ext_safeprojectname$.UnitOfWork\$ext_safeprojectname$.UnitOfWork.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RxWeb.Core" Version="2.0.2" />
+    <PackageReference Include="RxWeb.Core.Annotations" Version="2.0.4" />
+    <PackageReference Include="RxWeb.Core.Cache" Version="2.0.2" />
+    <PackageReference Include="RxWeb.Core.Sanitizers" Version="2.0.3" />
+    <PackageReference Include="RxWeb.Core.Security" Version="3.0.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>

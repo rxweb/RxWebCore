@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>2.0.1</Version>
+    <Version>3.0.1</Version>
+    <Authors>Ajay Ojha</Authors>
+    <Company>RxWeb</Company>
   </PropertyGroup>
 
   <ItemGroup>

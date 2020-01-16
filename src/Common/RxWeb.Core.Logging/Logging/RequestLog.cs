@@ -80,7 +80,7 @@ namespace RxWeb.Core.Logging
                 var serializeText = JsonConvert.SerializeObject(log);
                 sqlCommand.Parameters.Add(new SqlParameter("@Log", serializeText.Replace("'",string.Empty)));
                 sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                sqlCommand.CommandText = "spApplicationLog";
+                sqlCommand.CommandText = "ApplicationLog";
                 sqlCommand.Connection = sqlConnection;
                 await sqlConnection.OpenAsync();
                 await sqlCommand.ExecuteNonQueryAsync();

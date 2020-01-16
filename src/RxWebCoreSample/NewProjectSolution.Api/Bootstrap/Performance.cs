@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
-using NewProjectSolution.Infrastructure.Singleton;
 using System.IO.Compression;
 using System.Linq;
 

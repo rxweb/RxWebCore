@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace RxWeb.Core.AspNetCore
 {
-    public abstract class BaseDomainCollectionController<T, FromQuery> : ControllerBase where T : class where FromQuery : class
+    public abstract class BaseDomainCollectionController<T> : ControllerBase where T : class 
     {
-        protected ICoreCollectionDomain<T, FromQuery> Domain { get; set; }
+        protected ICoreCollectionDomain<T> Domain { get; set; }
 
-        public BaseDomainCollectionController(ICoreCollectionDomain<T, FromQuery> domain)
+        public BaseDomainCollectionController(ICoreCollectionDomain<T> domain)
         {
             this.Domain = domain;
         }

@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using NewProjectSolution.Infrastructure.Singleton;
 using NewProjectSolution.UnitOfWork.Main;
-using RxWeb.Core.Security.Authorization;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using System.Linq;
-using System;
 using RxWeb.Core.Security;
+using RxWeb.Core.Security.Authorization;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace NewProjectSolution.Infrastructure.Security
 {

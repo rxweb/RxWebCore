@@ -4,7 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>RxWeb.Core.Annotations</AssemblyName>
     <RootNamespace>RxWeb.Core.Annotations</RootNamespace>
-    <Version>2.0.3</Version>
+    <Version>2.0.4</Version>
+    <Authors>Ajay Ojha</Authors>
+    <Company>RxWeb</Company>
   </PropertyGroup>
 
   <ItemGroup>

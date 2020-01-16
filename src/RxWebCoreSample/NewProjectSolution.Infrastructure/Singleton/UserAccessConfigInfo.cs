@@ -1,11 +1,10 @@
-
 using NewProjectSolution.Models.Main;
 using NewProjectSolution.UnitOfWork.Main;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewProjectSolution.Infrastructure.Singleton
 {
@@ -137,6 +136,7 @@ namespace NewProjectSolution.Infrastructure.Singleton
         const string PATCH = "patch";
 
         const string DELETE = "delete";
+
         const string PARENT = "parent";
     }
 }

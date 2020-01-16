@@ -68,8 +68,6 @@ namespace NewProjectSolution.Api.Bootstrap
             if (environment.IsDevelopment())
             {
                 applicationBuilder.UseDeveloperExceptionPage();
-                applicationBuilder.UseSwagger();
-                applicationBuilder.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "New Project"));
             }
             else
             {
@@ -80,12 +78,13 @@ namespace NewProjectSolution.Api.Bootstrap
                 applicationBuilder.SetSecurityHeaders();
             }
 
+            applicationBuilder.UseSwaggerGen(environment);
 			applicationBuilder.UseLogging(typeof(ILogDatabaseFacade));
 			applicationBuilder.UseCors(AllowMySpecificOrigins);
             applicationBuilder.UseCookiePolicy(new CookiePolicyOptions
             {
                 HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
-                Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always,
+                Secure = CookieSecurePolicy.Always,
             });
             applicationBuilder.UseRouting();
 

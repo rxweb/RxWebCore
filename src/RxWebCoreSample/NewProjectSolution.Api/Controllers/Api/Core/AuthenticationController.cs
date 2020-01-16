@@ -6,7 +6,6 @@ using NewProjectSolution.Models.ViewModels;
 using NewProjectSolution.UnitOfWork.Main;
 using RxWeb.Core.Security.Cryptography;
 using RxWeb.Core.Security.Filters;
-using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -36,7 +35,15 @@ namespace NewProjectSolution.Api.Controllers
         [AllowAnonymousUser]
         public async Task<IActionResult> Post(AuthenticationModel authentication)
         {
-            
+            //var person = new Person
+            //{
+            //    PersonName = "abc"
+            //};
+            //await LoginUow.RegisterNewAsync<Person>(person);
+            //await LoginUow.CommitAsync();
+            var person = LoginUow.Repository<Person>().FindByKey(15);
+            await LoginUow.RegisterDeletedAsync<Person>(person);
+            await LoginUow.CommitAsync();
             var user = await LoginUow.Repository<vUser>().SingleOrDefaultAsync(t => t.UserName == authentication.UserName && !t.LoginBlocked);
             if (user != null && PasswordHash.VerifySignature(authentication.Password, user.Password, user.Salt))
             {

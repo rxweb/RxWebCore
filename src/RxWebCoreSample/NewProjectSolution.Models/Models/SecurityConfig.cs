@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace NewProjectSolution.Models
 {
-	public class SecurityConfig
+    public class SecurityConfig
     {
         public string[] AllowedHosts { get; set; }
 
