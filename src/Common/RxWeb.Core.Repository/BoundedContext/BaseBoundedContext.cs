@@ -6,6 +6,7 @@ using RxWeb.Core.Data.Extensions;
 using RxWeb.Core.Data.Models;
 using RxWeb.Core.Security;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RxWeb.Core.Data.BoundedContext
@@ -41,9 +42,14 @@ namespace RxWeb.Core.Data.BoundedContext
                 modelBuilder.AddTenantFilter<int>(tenantId);
 			if (!string.IsNullOrEmpty(timeZoneName))
                 modelBuilder.AddTimeZoneValueConversion(timeZoneName);
-			if (DatabaseConfig.MultiTenant.SchemaBasedMultiTenant)
+			if (DatabaseConfig.MultiTenant.Schema != null && (DatabaseConfig.MultiTenant.Schema.ConfigFromDb || DatabaseConfig.MultiTenant.Schema.HostUriSchemaMappings.Count > 0))
             {
-                var schemaInfo = TenantDbConnection.GetAsync(this.ContextAccessor.HttpContext.Request.Host.Value).Result;
+                var schemaInfo = new Dictionary<string,string>();
+                var hostUri = this.ContextAccessor.HttpContext.Request.Host.Value;
+                if (DatabaseConfig.MultiTenant.Schema.ConfigFromDb)
+                    schemaInfo = TenantDbConnection.GetAsync(hostUri).Result;
+                else if (DatabaseConfig.MultiTenant.Schema.HostUriSchemaMappings.ContainsKey(hostUri))
+                    schemaInfo = DatabaseConfig.MultiTenant.Schema.HostUriSchemaMappings[hostUri];
                 if (schemaInfo != null && schemaInfo.Keys.Contains(DbContext.Name))
                     modelBuilder.AddSchemaBasedTenant(schemaInfo[DbContext.Name]);
             }

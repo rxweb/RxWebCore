@@ -133,7 +133,7 @@ namespace RxWeb.Core.Data
                 foreach (var entry in exception.Entries)
                 {
                     if (entry is IConcurrencyException)
-                        ((IConcurrencyException)entry).OnConcurrencyException(entry);
+                        ((IConcurrencyException)entry).OnConcurrencyException(entry,this);
                     else
                         stringBuilder.AppendLine(entry.Metadata.Name);
                 }

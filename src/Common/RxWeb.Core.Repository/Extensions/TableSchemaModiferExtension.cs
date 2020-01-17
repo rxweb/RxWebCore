@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RxWeb.Core.Data.Annotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -15,6 +16,9 @@ namespace RxWeb.Core.Data
             {
                 var tableAttribute = enumerator.Current.GetCustomAttributes(typeof(TableAttribute), true).SingleOrDefault() as TableAttribute;
                 if (tableAttribute != null) {
+                    var defaultSchemaAttribute = enumerator.Current.GetCustomAttributes(typeof(DefaultSchema), true).SingleOrDefault() as DefaultSchema;
+                    if (defaultSchemaAttribute != null)
+                        schema = defaultSchemaAttribute.SchemaName;
                     modelBuilder.Entity(enumerator.Current).ToTable(tableAttribute.Name, schema);
                 }
             }

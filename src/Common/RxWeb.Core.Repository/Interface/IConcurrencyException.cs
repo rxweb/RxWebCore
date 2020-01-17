@@ -4,6 +4,6 @@ namespace RxWeb.Core.Data.Interface
 {
     public interface IConcurrencyException
     {
-        void OnConcurrencyException(EntityEntry entity);
+        void OnConcurrencyException(EntityEntry entity,ICoreUnitOfWork uow);
     }
 }

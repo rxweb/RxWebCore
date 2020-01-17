@@ -11,6 +11,7 @@ namespace RxWeb.Core.Data.BoundedContext
         public BaseDbContext(IOptions<DatabaseConfig> databaseConfig, IHttpContextAccessor contextAccessor, ITenantDbConnectionInfo tenantDbConnection)
         {
             ConnectionStringConfig = databaseConfig.Value.ConnectionString;
+            DatabaseConfig = databaseConfig.Value;
             TenantDbConnection = tenantDbConnection;
             ContextAccessor = contextAccessor;
         }
@@ -33,9 +34,16 @@ namespace RxWeb.Core.Data.BoundedContext
             else
             {
                 var hostUri = GetHostUri();
-                var clientConfig = TenantDbConnection.GetAsync(hostUri).Result;
-                if (clientConfig != null && clientConfig.ContainsKey(keyName))
-                    connectionString = clientConfig[keyName];
+                if (DatabaseConfig.MultiTenant != null && DatabaseConfig.MultiTenant.Database != null && (DatabaseConfig.MultiTenant.Database.ConfigFromDb || DatabaseConfig.MultiTenant.Database.HostUriConnectionMappings.Count > 0)) {
+                    var clientConfig = new Dictionary<string, string>();
+                    if (DatabaseConfig.MultiTenant.Database.HostUriConnectionMappings.Count > 0 && DatabaseConfig.MultiTenant.Database.HostUriConnectionMappings.ContainsKey(hostUri)) 
+                        clientConfig = DatabaseConfig.MultiTenant.Database.HostUriConnectionMappings[hostUri];
+                    else
+                        clientConfig = TenantDbConnection.GetAsync(hostUri).Result;
+                    if (clientConfig != null && clientConfig.ContainsKey(keyName))
+                        connectionString = clientConfig[keyName];
+                }
+                
             }
             return connectionString;
         }
@@ -51,6 +59,8 @@ namespace RxWeb.Core.Data.BoundedContext
         private IHttpContextAccessor ContextAccessor { get; set; }
 
         private ITenantDbConnectionInfo TenantDbConnection { get; set; }
+
+        private DatabaseConfig DatabaseConfig { get; set; }
 
     }
 }
