@@ -5,9 +5,9 @@
     "Web",
     "WebAPI"
   ],
-  "name": "Clean Architecture for ASP.NET Core Web API ",
+  "name": "Clean Architecture Of ASP.NET Core Web API ",
   "generatorVersions": "[1.0.0.0-*)",
-  "description": "A project template for creating an ASP.NET Core application with an example Controller for a RESTful HTTP service. This template can also be used for ASP.NET Core MVC Views and Controllers.",
+  "description": "A template solution for building RESTful API's with good design patterns and practices for enterprise application.",
   "groupIdentity": "RxWeb.Web.WebApi",
   "precedence": "6000",
   "identity": "RxWeb.Web.WebApi.CSharp.3.1",
@@ -19,10 +19,10 @@
   "sourceName": "CleanArchitecture",
   "preferNameDirectory": true,
   "guids": [
-    "09732173-2cef-46b7-83db-1334bcb079d3", // Tenant ID
-    "53bc9b9d-9d6a-45d4-8429-2a2761773502" // Client ID
+    "09732173-2cef-46b7-83db-1334bcb079d3",
+    "53bc9b9d-9d6a-45d4-8429-2a2761773502" 
   ],
-  "defaultName": "RxWebApplication",
+  "defaultName": "CleanArchitecture",
   "primaryOutputs": [
     {
       "path": "CleanArchitecture.Api\\CleanArchitecture.Api.csproj"
@@ -41,7 +41,7 @@
     },
 	{
       "path": "CleanArchitecture.Domain\\CleanArchitecture.Domain.csproj"
-    },
+    }
   ],
   "postActions": [
     {

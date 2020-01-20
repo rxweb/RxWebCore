@@ -6,34 +6,39 @@ using RxWeb.Core.Data.Annotations;
 using RxWeb.Core.Sanitizers;
 using NewProjectSolution.Models.Enums.Main;
 using NewProjectSolution.BoundedContext.SqlContext;
+
 namespace NewProjectSolution.Models.Main
 {
     [Table("Persons",Schema="dbo")]
     [RecordLog]
-    public partial class Person
+    public partial class Developer
     {
-		#region PersonId Annotations
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [System.ComponentModel.DataAnnotations.Key]
-		#endregion PersonId Annotations
+        public int DeveloperId { get; set; }
+    
+        [TenantQueryFilter] // Single Database Multitenant
+        public int ClientId { get; set; }
 
-        public int PersonId { get; set; }
+        [Unique(typeof(IMainDatabaseFacade))] //Unique Validation
+        public string DeveloperName { get; set; }
 
-		#region PersonName Annotations
+        [Required(conditionalExpressionName:nameof(Developer.IsRequiredSkills))]
+        public List<string> Skills { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-		#endregion PersonName Annotations
+        [ValueConversion(typeof(EncryDecryValueConversion))]
+        public string Email { get; set; }
 
-        public string PersonName { get; set; }
+        [OnAction("POST",RxWeb.Core.Sanitizers.Enums.ActionValueType.NameClaimIdentifier)]
+        public int CreatedBy { get; set; }
 
-
-        public Nullable<bool> IsActive { get; set; }
-
-
-        public Person()
-        {
-        }
+        [TimeZoneValueConversion]
+        public DateTimeOffset CreatedDate { get; set; }
 	}
+
+    public partial class Developer {
+        public void IsRequiredSkills() { }
+    }
+
+    public class EncryDecryValueConversion { }
+
 }

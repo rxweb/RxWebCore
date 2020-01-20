@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="AspNetCoreVsix.62ac9bc7-6be9-42ee-af26-242b2130db0e" Version="1.0" Language="en-US" Publisher="Ajay Ojha" />
-        <DisplayName>RxCleanArchitecture</DisplayName>
-        <Description xml:space="preserve">A template solution for building Restful API's with good design patterns and practices for enterprise application.</Description>
+        <DisplayName>Clean Architecture of AspNetCore Api</DisplayName>
+        <Description xml:space="preserve">A template solution for building RESTful API's with good design patterns and practices for enterprise application.</Description>
         <MoreInfo>https://rxweb.io/home</MoreInfo>
         <License>license.txt</License>
         <GettingStartedGuide>https://rxweb.io/rx-web-core/step-by-step-guide/project-creation</GettingStartedGuide>
@@ -21,6 +21,7 @@
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
     <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" d:ProjectName="%CurrentProject%" />
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" d:TargetPath="ProjectTemplates\CleanArchitecture.zip" />
     </Assets>
 </PackageManifest>

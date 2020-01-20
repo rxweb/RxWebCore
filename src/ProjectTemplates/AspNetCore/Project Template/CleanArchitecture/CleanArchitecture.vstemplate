@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
+    <DisplayName>Clean Architecture of AspNetCore Api</DisplayName>
     <Name>Clean Architecture of AspNetCore Api</Name>
-    <Description>A template solution for building Restful API's with good design pattern and practices for enterprise application.</Description>
+    <Description>A template solution for building RESTful API's with good design patterns and practices for enterprise application.</Description>
     <Icon>icon.png</Icon>
     <ProjectType>CSharp</ProjectType>
     <SortOrder>1000</SortOrder>
