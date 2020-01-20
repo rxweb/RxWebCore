@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContosoApplication.BoundedContext\ContosoApplication.BoundedContext.csproj" />
+    <ProjectReference Include="..\ContosoApplication.UnitOfWork\ContosoApplication.UnitOfWork.csproj" />
+    <ProjectReference Include="..\ContosoApplication.Models\ContosoApplication.Models.csproj" />
+    <ProjectReference Include="..\ContosoApplication.Infrastructure\ContosoApplication.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>

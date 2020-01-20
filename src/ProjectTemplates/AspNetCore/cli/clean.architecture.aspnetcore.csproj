@@ -17,6 +17,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/rxweb/rxwebcore</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rxweb/rxwebcore.git</RepositoryUrl>
+	<PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <PackageTags>clean architecture</PackageTags>
     
@@ -25,7 +26,7 @@
   <ItemGroup Label="Files">
     <Content Include="**\*" Exclude="**\bin\**\*;**\obj\**\*;**\.vs\**\*" />
     <Compile Remove="**\*" />
-    
+    <None Include="icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
   
 

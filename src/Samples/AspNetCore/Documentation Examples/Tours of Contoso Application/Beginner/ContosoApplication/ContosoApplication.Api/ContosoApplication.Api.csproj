@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContosoApplication.Domain\ContosoApplication.Domain.csproj" />
+    <ProjectReference Include="..\ContosoApplication.BoundedContext\ContosoApplication.BoundedContext.csproj" />
+    <ProjectReference Include="..\ContosoApplication.Models\ContosoApplication.Models.csproj" />
+    <ProjectReference Include="..\ContosoApplication.Infrastructure\ContosoApplication.Infrastructure.csproj" />
+    <ProjectReference Include="..\ContosoApplication.UnitOfWork\ContosoApplication.UnitOfWork.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="RxWeb.Core.AspNetCore" Version="3.0.4-preview1" />
+    <PackageReference Include="RxWeb.Core.Localization" Version="3.0.1" />
+    <PackageReference Include="RxWeb.Core.Logging" Version="3.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+</Project>
