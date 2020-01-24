@@ -33,6 +33,7 @@ namespace $ext_safeprojectname$.Api
             services.AddSingletonService();
             services.AddScopedService();
             services.AddDbContextService();
+			services.AddRxWebLocalization();
             services.AddControllers();
             services.AddSwaggerOptions();
             services.AddMvc(options=> {

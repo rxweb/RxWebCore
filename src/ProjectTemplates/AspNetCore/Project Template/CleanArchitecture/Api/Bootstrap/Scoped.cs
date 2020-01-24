@@ -24,6 +24,7 @@ namespace $ext_safeprojectname$.Api.Bootstrap
             serviceCollection.AddScoped<IModelValidation, ModelValidation>();
 			serviceCollection.AddScoped<IAuditLog, AuditLog>();
 			serviceCollection.AddScoped<IApplicationTokenProvider, ApplicationTokenProvider>();
+            serviceCollection.AddScoped(typeof(IDbContextManager<>), typeof(DbContextManager<>));
 
             #region ContextService
 

@@ -24,7 +24,7 @@ namespace CleanArchitecture.Api.Bootstrap
             serviceCollection.AddScoped<IModelValidation, ModelValidation>();
 			serviceCollection.AddScoped<IAuditLog, AuditLog>();
 			serviceCollection.AddScoped<IApplicationTokenProvider, ApplicationTokenProvider>();
-
+            serviceCollection.AddScoped(typeof(IDbContextManager<>), typeof(DbContextManager<>));
             #region ContextService
 
                         serviceCollection.AddScoped<ILoginContext, LoginContext>();
