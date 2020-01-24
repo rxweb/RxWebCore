@@ -20,13 +20,14 @@
 	<PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <PackageTags>clean architecture</PackageTags>
+    <Version>1.0.1</Version>
     
   </PropertyGroup>
   
   <ItemGroup Label="Files">
     <Content Include="**\*" Exclude="**\bin\**\*;**\obj\**\*;**\.vs\**\*" />
     <Compile Remove="**\*" />
-    <None Include="icon.png" Pack="true" PackagePath="\"/>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   
 
