@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\HumanResourceApplication.Domain\HumanResourceApplication.Domain.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.BoundedContext\HumanResourceApplication.BoundedContext.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.Models\HumanResourceApplication.Models.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.Infrastructure\HumanResourceApplication.Infrastructure.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.UnitOfWork\HumanResourceApplication.UnitOfWork.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="RxWeb.Core.AspNetCore" Version="3.0.4-preview1" />
+    <PackageReference Include="RxWeb.Core.Localization" Version="3.0.1" />
+    <PackageReference Include="RxWeb.Core.Logging" Version="3.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Api\Search\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+
+</Project>

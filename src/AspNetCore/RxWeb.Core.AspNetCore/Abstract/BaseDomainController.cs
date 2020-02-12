@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ObjectPool;
 using Newtonsoft.Json.Linq;
@@ -13,9 +14,9 @@ namespace RxWeb.Core.AspNetCore
 {
     public abstract class BaseDomainController<T,FromQuery> : ControllerBase where T : class where FromQuery : class
     {
-        protected ICoreDomain<T,FromQuery> Domain { get; set; }
+        protected ICorePatchDomain<T,FromQuery> Domain { get; set; }
 
-        public BaseDomainController(ICoreDomain<T, FromQuery> domain)
+        public BaseDomainController(ICorePatchDomain<T, FromQuery> domain)
         {
             this.Domain = domain;
         }
@@ -56,6 +57,17 @@ namespace RxWeb.Core.AspNetCore
             }
             return BadRequest(validations);
         }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public virtual async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<T> entity)
+        {
+            var serverEntity = this.Domain.PatchEntity(id);
+            entity.ApplyTo(serverEntity);
+            return await Put(id, serverEntity);
+        }
+
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

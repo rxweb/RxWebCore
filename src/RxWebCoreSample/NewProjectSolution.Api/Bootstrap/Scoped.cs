@@ -7,7 +7,6 @@ using NewProjectSolution.UnitOfWork.Main;
 using RxWeb.Core.Annotations;
 using RxWeb.Core.Data;
 using RxWeb.Core.Security;
-using NewProjectSolution.Domain.MasterModule;
             #endregion Namespace
 
 
@@ -47,36 +46,7 @@ namespace NewProjectSolution.Api.Bootstrap
 
 
             #region DomainService
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonCollectionDomain, PersonCollectionDomain>();
-            
-            serviceCollection.AddScoped<IPersonDomain, PersonDomain>();
+           
             #endregion DomainService
 
 

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\HumanResourceApplication.Models\HumanResourceApplication.Models.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.BoundedContext\HumanResourceApplication.BoundedContext.csproj" />
+    <ProjectReference Include="..\HumanResourceApplication.UnitOfWork\HumanResourceApplication.UnitOfWork.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RxWeb.Core" Version="2.0.3-preview1" />
+    <PackageReference Include="RxWeb.Core.Annotations" Version="2.0.4" />
+    <PackageReference Include="RxWeb.Core.Cache" Version="2.0.2" />
+    <PackageReference Include="RxWeb.Core.Sanitizers" Version="2.0.3" />
+    <PackageReference Include="RxWeb.Core.Security" Version="3.0.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>
