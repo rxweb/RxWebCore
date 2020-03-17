@@ -36,6 +36,7 @@ namespace RxWeb.Core.Data.BoundedContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.AddPropertyValueConversion();
+            modelBuilder.AddCompositeKeys();
             var tenantId = GetTenantId();
 			var timeZoneName = GetTimeZoneName();
             if (tenantId != 0)
