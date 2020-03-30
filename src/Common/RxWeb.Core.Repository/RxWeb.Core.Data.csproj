@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>3.0.2-preview2</Version>
+    <Version>3.0.2-preview3</Version>
     <Authors>Ajay Ojha</Authors>
     <Company>RxWeb</Company>
   </PropertyGroup>

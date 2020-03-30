@@ -44,6 +44,9 @@ namespace RxWeb.Core.Data
                 }
                 result.Add(entity);
             }
+            dataReader.Close();
+            sqlConnection.Close();
+            sqlConnection.Dispose();
             return result;
         }
         public async Task<IDbContextTransaction> BeginTransactionAsync() {
