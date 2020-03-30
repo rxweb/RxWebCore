@@ -16,6 +16,13 @@ namespace RxWeb.Core.Security.JwtToken
         public JwtTokenProvider(IDataProtectionProvider dataProtection,IHttpContextAccessor contextAccessor) {
             this.DataProtector = dataProtection.CreateProtector(typeof(JwtTokenProvider).FullName);
         }
+        private bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken tokenToValidate, TokenValidationParameters @param)
+        {
+            if (expires != null)
+                return expires > DateTime.UtcNow;
+            return false;
+        }
+
         public virtual ClaimsPrincipal ValidateToken(string securityKey, string jsonWebToken)
         {
             var decryptToken = this.DataProtector.Unprotect(jsonWebToken);
@@ -24,7 +31,9 @@ namespace RxWeb.Core.Security.JwtToken
             {
                 IssuerSigningKey = symmetricSecurityKey,
                 ValidateAudience = false,
-                ValidateIssuer = false
+                ValidateIssuer = false,
+                ValidateLifetime = true,
+                LifetimeValidator = this.LifetimeValidator
             };
             SecurityToken sToken;
             var principal = new JwtSecurityTokenHandler().ValidateToken(decryptToken, t, out sToken);
