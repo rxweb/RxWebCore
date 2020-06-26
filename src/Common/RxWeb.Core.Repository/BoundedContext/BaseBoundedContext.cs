@@ -19,6 +19,7 @@ namespace RxWeb.Core.Data.BoundedContext
             TenantDbConnection = tenantDbConnection;
             DatabaseConfig = databaseConfig;
             ContextAccessor = contextAccessor;
+            this.ChangeTracker.LazyLoadingEnabled = false;
             
         }
 
@@ -30,13 +31,15 @@ namespace RxWeb.Core.Data.BoundedContext
                 {
                     options.AddConnectionResiliency(this.DatabaseConfig.ConnectionResiliency);
                     options.CommandTimeout(this.DatabaseConfig.CommandTimeout);
-                }).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning)).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                }).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.AddPropertyValueConversion();
             modelBuilder.AddCompositeKeys();
+            modelBuilder.AddHasNoKeys();
+            modelBuilder.AddHasOne();
             var tenantId = GetTenantId();
 			var timeZoneName = GetTimeZoneName();
             if (tenantId != 0)

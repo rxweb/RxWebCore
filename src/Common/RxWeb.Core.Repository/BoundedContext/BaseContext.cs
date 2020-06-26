@@ -14,6 +14,7 @@ namespace RxWeb.Core.Data.BoundedContext
             DatabaseConfig = databaseConfig.Value;
             TenantDbConnection = tenantDbConnection;
             ContextAccessor = contextAccessor;
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
 		public string Name{ get; set; }
